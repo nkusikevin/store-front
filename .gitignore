@@ -1,0 +1,9 @@
+**node_modules**
+**.serverless**
+**.idea**
+**bin**
+**.DS_Store
+**.local
+**bundle**
+_aws.graphql
+jsbundle.zip

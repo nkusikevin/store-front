@@ -1,0 +1,53 @@
+# serverless/serverless.yml
+
+service: my-go-lambda
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  region: us-east-1
+
+functions:
+  hello:
+    handler: bootstrap
+    runtime: provided.al2
+    package:
+      artifact: ./bin/hello.zip
+    events:
+      - http:
+          path: hello
+          method: get
+
+  api:
+    package:
+      artifact: ./bin/api.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: api
+          method: get
+
+  loger:
+    package:
+      artifact: ./bin/loger.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: loger
+          method: get
+
+custom:
+  scriptable:
+    hooks:
+      before:package:createDeploymentArtifacts: make build
+
+package:
+  individually: true
+
+plugins:
+  - serverless-scriptable-plugin
