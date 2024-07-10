@@ -23,14 +23,15 @@ type OrderItem struct {
 	Quantity  int     `dynamodbav:"quantity"`
 	Price     float64 `dynamodbav:"price"`
 }
-type Customer struct {
-	PK         string    `dynamodbav:"pk"`
-	SK         string    `dynamodbav:"sk"`
-	CustomerID string    `dynamodbav:"customerId"`
-	Name       string    `dynamodbav:"name"`
-	Email      string    `dynamodbav:"email"`
-	Phone      string    `dynamodbav:"phone"`
-	Address    string    `dynamodbav:"address"`
-	CreatedAt  time.Time `dynamodbav:"createdAt"`
-	UpdatedAt  time.Time `dynamodbav:"updatedAt"`
-}
+
+// type Customer struct {
+// 	PK         string    `dynamodbav:"pk"`
+// 	SK         string    `dynamodbav:"sk"`
+// 	CustomerID string    `dynamodbav:"customerId"`
+// 	Name       string    `dynamodbav:"name"`
+// 	Email      string    `dynamodbav:"email"`
+// 	Phone      string    `dynamodbav:"phone"`
+// 	Address    string    `dynamodbav:"address"`
+// 	CreatedAt  time.Time `dynamodbav:"createdAt"`
+// 	UpdatedAt  time.Time `dynamodbav:"updatedAt"`
+// }
