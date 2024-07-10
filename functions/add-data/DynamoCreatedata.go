@@ -49,35 +49,69 @@ func init() {
 	svc = dynamodb.New(sess)
 }
 
+type Order struct {
+	PK              string      `dynamodbav:"PK"` // Attribute key names should match exactly
+	SK              string      `dynamodbav:"SK"`
+	OrderID         string      `dynamodbav:"OrderID"`
+	OrderDate       string      `dynamodbav:"OrderDate"`
+	TotalAmount     float64     `dynamodbav:"TotalAmount"`
+	CustomerID      string      `dynamodbav:"CustomerID"`
+	Items           []OrderItem `dynamodbav:"Items"` // List of ordered items
+	ShippingAddress string      `dynamodbav:"ShippingAddress"`
+	CreatedAt       time.Time   `dynamodbav:"CreatedAt"`
+	UpdatedAt       time.Time   `dynamodbav:"UpdatedAt"`
+}
+
+type OrderItem struct {
+	ProductID string  `dynamodbav:"ProductID"`
+	Quantity  int     `dynamodbav:"Quantity"`
+	Price     float64 `dynamodbav:"Price"`
+}
+
+// Create a new product
+// product := Product{
+// 	PK:          "PRODUCT#1",
+// 	SK:          "PRODUCT#2",
+// 	ProductID:   "1",
+// 	Name:        "Product 2",
+// 	Price:       100.00,
+// 	Category:    "Category 2",
+// 	Stock:       100,
+// 	Description: "Description of product 2",
+// 	CreatedAt:   time.Now(),
+// 	UpdatedAt:   time.Now(),
+// }
+
+// customer := Customer{
+// 	PK:         "CUSTOMER#2",
+// 	SK:         "CUSTOMER#2",
+// 	CustomerID: "2",
+// 	Name:       "Kabera john Doe",
+// 	Email:      "johndoe@example.com",
+// 	Phone:      "123-555-1234",
+// 	Address:    "123 Main St, Anytown, USA",
+// 	CreatedAt:  time.Now(),
+// 	UpdatedAt:  time.Now(),
+// }
+
 func main() {
-
-	// Create a new product
-	// product := Product{
-	// 	PK:          "PRODUCT#1",
-	// 	SK:          "PRODUCT#2",
-	// 	ProductID:   "1",
-	// 	Name:        "Product 2",
-	// 	Price:       100.00,
-	// 	Category:    "Category 2",
-	// 	Stock:       100,
-	// 	Description: "Description of product 2",
-	// 	CreatedAt:   time.Now(),
-	// 	UpdatedAt:   time.Now(),
-	// }
-
-	customer := Customer{
-		PK:         "CUSTOMER#2",
-		SK:         "CUSTOMER#2",
-		CustomerID: "2",
-		Name:       "Kabera john Doe",
-		Email:      "johndoe@example.com",
-		Phone:      "123-555-1234",
-		Address:    "123 Main St, Anytown, USA",
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+	order := Order{
+		PK:          "ORDER#2",
+		SK:          "ORDER#2",
+		OrderID:     "2",
+		OrderDate:   "2024-07-11",
+		TotalAmount: 150.00,
+		CustomerID:  "CUSTOMER#2",
+		Items: []OrderItem{
+			{ProductID: "PRODUCT#3", Quantity: 1, Price: 50.00},
+			{ProductID: "PRODUCT#4", Quantity: 2, Price: 50.00},
+		},
+		ShippingAddress: "456 Oak Ave, Springfield, USA",
+		CreatedAt:       time.Now(),
+		UpdatedAt:       time.Now(),
 	}
 
-	av, err := dynamodbattribute.MarshalMap(customer)
+	av, err := dynamodbattribute.MarshalMap(order)
 	if err != nil {
 		log.Fatal(err)
 	}
