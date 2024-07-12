@@ -1,6 +1,6 @@
 # serverless/serverless.yml
 
-service: my-go-lambda
+service: crus-api
 
 frameworkVersion: "3"
 
@@ -9,16 +9,6 @@ provider:
   region: us-east-1
 
 functions:
-  hello:
-    handler: bootstrap
-    runtime: provided.al2
-    package:
-      artifact: ./bin/hello.zip
-    events:
-      - http:
-          path: hello
-          method: get
-
   api:
     package:
       artifact: ./bin/api.zip
@@ -39,6 +29,28 @@ functions:
     events:
       - http:
           path: loger
+          method: get
+
+  deleteData:
+    package:
+      artifact: ./bin/deleteData.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: deleteData
+          method: delete
+
+  getData:
+    package:
+      artifact: ./bin/getData.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: get-data
           method: get
 
 custom:
