@@ -1,0 +1,65 @@
+# serverless/serverless.yml
+
+service: crus-api
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  region: us-east-1
+
+functions:
+  api:
+    package:
+      artifact: ./bin/api.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: api
+          method: get
+
+  loger:
+    package:
+      artifact: ./bin/loger.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: loger
+          method: get
+
+  deleteData:
+    package:
+      artifact: ./bin/deleteData.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: deleteData
+          method: delete
+
+  getData:
+    package:
+      artifact: ./bin/getData.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: get-data
+          method: get
+
+custom:
+  scriptable:
+    hooks:
+      before:package:createDeploymentArtifacts: make build
+
+package:
+  individually: true
+
+plugins:
+  - serverless-scriptable-plugin

@@ -1,0 +1,46 @@
+[
+	{
+		"PK": "PRODUCT#123",
+		"SK": "PRODUCT#123",
+		"Name": "Product 1",
+		"Price": "19.99",
+		"Category": "Electronics",
+		"Stock": "50"
+	},
+	{
+		"PK": "PRODUCT#124",
+		"SK": "PRODUCT#124",
+		"Name": "Product 2",
+		"Price": "29.99",
+		"Category": "Home",
+		"Stock": "30"
+	},
+	{
+		"PK": "ORDER#456",
+		"SK": "ORDER#456",
+		"OrderDate": "2024-07-10",
+		"TotalAmount": "49.99",
+		"CustomerID": "CUSTOMER#789"
+	},
+	{
+		"PK": "ORDER#457",
+		"SK": "ORDER#457",
+		"OrderDate": "2024-07-11",
+		"TotalAmount": "29.99",
+		"CustomerID": "CUSTOMER#790"
+	},
+	{
+		"PK": "CUSTOMER#789",
+		"SK": "CUSTOMER#789",
+		"Name": "Customer 1",
+		"Email": "customer1@example.com",
+		"Address": "123 Main St"
+	},
+	{
+		"PK": "CUSTOMER#790",
+		"SK": "CUSTOMER#790",
+		"Name": "Customer 2",
+		"Email": "customer2@example.com",
+		"Address": "456 Elm St"
+	}
+]
