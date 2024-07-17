@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "crus-api",
+    "service": "orders-service",
     "serviceObject": {
-      "name": "crus-api"
+      "name": "orders-service"
     },
     "provider": {
       "name": "aws",
@@ -82,28 +82,16 @@
               }
             }
           },
-          "ApiLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-              "LogGroupName": "/aws/lambda/crus-api-dev-api"
-            }
-          },
-          "LogerLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-              "LogGroupName": "/aws/lambda/crus-api-dev-loger"
-            }
-          },
           "DeleteDataLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/crus-api-dev-deleteData"
+              "LogGroupName": "/aws/lambda/orders-service-dev-deleteData"
             }
           },
           "GetDataLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/crus-api-dev-getData"
+              "LogGroupName": "/aws/lambda/orders-service-dev-getData"
             }
           },
           "IamRoleLambdaExecution": {
@@ -131,7 +119,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "crus-api",
+                        "orders-service",
                         "dev",
                         "lambda"
                       ]
@@ -149,7 +137,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crus-api-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/orders-service-dev*:*"
                           }
                         ]
                       },
@@ -160,7 +148,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crus-api-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/orders-service-dev*:*:*"
                           }
                         ]
                       }
@@ -173,7 +161,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "crus-api",
+                    "orders-service",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -184,56 +172,6 @@
               }
             }
           },
-          "ApiLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-              "Code": {
-                "S3Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "S3Key": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z/api.zip"
-              },
-              "Handler": "bootstrap",
-              "Runtime": "provided.al2",
-              "FunctionName": "crus-api-dev-api",
-              "MemorySize": 1024,
-              "Timeout": 6,
-              "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
-              }
-            },
-            "DependsOn": [
-              "ApiLogGroup"
-            ]
-          },
-          "LogerLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-              "Code": {
-                "S3Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "S3Key": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z/loger.zip"
-              },
-              "Handler": "bootstrap",
-              "Runtime": "provided.al2",
-              "FunctionName": "crus-api-dev-loger",
-              "MemorySize": 1024,
-              "Timeout": 6,
-              "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
-              }
-            },
-            "DependsOn": [
-              "LogerLogGroup"
-            ]
-          },
           "DeleteDataLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -241,11 +179,11 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z/deleteData.zip"
+                "S3Key": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z/deleteData.zip"
               },
               "Handler": "bootstrap",
               "Runtime": "provided.al2",
-              "FunctionName": "crus-api-dev-deleteData",
+              "FunctionName": "orders-service-dev-deleteData",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -266,11 +204,11 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z/getData.zip"
+                "S3Key": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z/getData.zip"
               },
               "Handler": "bootstrap",
               "Runtime": "provided.al2",
-              "FunctionName": "crus-api-dev-getData",
+              "FunctionName": "orders-service-dev-getData",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -284,86 +222,36 @@
               "GetDataLogGroup"
             ]
           },
-          "ApiLambdaVersionO5zG6goYLuxAI1rLc4PXqr9Rxn5aNUXXCpIJbAk": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "ApiLambdaFunction"
-              },
-              "CodeSha256": "epPv95doSfthn92W/yvXC8oOZe7qkm8kBegqILpPBxg="
-            }
-          },
-          "LogerLambdaVersionWNYWXW4xH1PvCgRhWIFU9rZFmulBOMNTIUi0rDeTti8": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "LogerLambdaFunction"
-              },
-              "CodeSha256": "glLqzCpwB3EHx66YMH/4svjTQjZGg2rNRUktCmPI90w="
-            }
-          },
-          "GetDataLambdaVersionv0letvjd0L5pv0cIHjFVb8EHPD6VgvoLlvD3x0ZPk": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "GetDataLambdaFunction"
-              },
-              "CodeSha256": "K62dTAez4EhIoW+JUpGCGFFfm4p4HC+4LMS593m9g20="
-            }
-          },
-          "DeleteDataLambdaVersionNbydwOnp74zaoixFiS744l4EIUw0EgpIEVOXoYJocI": {
+          "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteDataLambdaFunction"
               },
-              "CodeSha256": "igl3azSB1ZQr9aH1mydI3NuI+YLqOuvWQn3crSPgHk0="
+              "CodeSha256": "LBIyn5WfabqFkwCCbs/gf78YAf4yaC3i+3HHXSEVv9o="
+            }
+          },
+          "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetDataLambdaFunction"
+              },
+              "CodeSha256": "Kb2MlzX7VK7abFTg1+lUdQgoiUtvkGa1ikYNVWtYzYA="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-crus-api",
+              "Name": "dev-orders-service",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
                 ]
               },
               "Policy": ""
-            }
-          },
-          "ApiGatewayResourceApi": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
-              },
-              "PathPart": "api",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayResourceLoger": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
-              },
-              "PathPart": "loger",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
             }
           },
           "ApiGatewayResourceDeletedata": {
@@ -395,98 +283,6 @@
                 "Ref": "ApiGatewayRestApi"
               }
             }
-          },
-          "ApiGatewayMethodApiGet": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "GET",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceApi"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "NONE",
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "ApiLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": []
-            },
-            "DependsOn": [
-              "ApiLambdaPermissionApiGateway"
-            ]
-          },
-          "ApiGatewayMethodLogerGet": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "GET",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceLoger"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "NONE",
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "LogerLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": []
-            },
-            "DependsOn": [
-              "LogerLambdaPermissionApiGateway"
-            ]
           },
           "ApiGatewayMethodDeletedataDelete": {
             "Type": "AWS::ApiGateway::Method",
@@ -534,10 +330,10 @@
               "DeleteDataLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayMethodGetDashdataGet": {
+          "ApiGatewayMethodGetDashdataPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-              "HttpMethod": "GET",
+              "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
                 "Ref": "ApiGatewayResourceGetDashdata"
@@ -580,7 +376,7 @@
               "GetDataLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1720776144007": {
+          "ApiGatewayDeployment1721210513972": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -589,85 +385,9 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodApiGet",
-              "ApiGatewayMethodLogerGet",
               "ApiGatewayMethodDeletedataDelete",
-              "ApiGatewayMethodGetDashdataGet"
+              "ApiGatewayMethodGetDashdataPost"
             ]
-          },
-          "ApiLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "ApiLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "ApiGatewayRestApi"
-                    },
-                    "/*/*"
-                  ]
-                ]
-              }
-            }
-          },
-          "LogerLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "LogerLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "ApiGatewayRestApi"
-                    },
-                    "/*/*"
-                  ]
-                ]
-              }
-            }
           },
           "DeleteDataLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
@@ -750,43 +470,25 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-crus-api-dev-ServerlessDeploymentBucketName"
-            }
-          },
-          "ApiLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "ApiLambdaVersionO5zG6goYLuxAI1rLc4PXqr9Rxn5aNUXXCpIJbAk"
-            },
-            "Export": {
-              "Name": "sls-crus-api-dev-ApiLambdaFunctionQualifiedArn"
-            }
-          },
-          "LogerLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "LogerLambdaVersionWNYWXW4xH1PvCgRhWIFU9rZFmulBOMNTIUi0rDeTti8"
-            },
-            "Export": {
-              "Name": "sls-crus-api-dev-LogerLambdaFunctionQualifiedArn"
-            }
-          },
-          "GetDataLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "GetDataLambdaVersionv0letvjd0L5pv0cIHjFVb8EHPD6VgvoLlvD3x0ZPk"
-            },
-            "Export": {
-              "Name": "sls-crus-api-dev-GetDataLambdaFunctionQualifiedArn"
+              "Name": "sls-orders-service-dev-ServerlessDeploymentBucketName"
             }
           },
           "DeleteDataLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteDataLambdaVersionNbydwOnp74zaoixFiS744l4EIUw0EgpIEVOXoYJocI"
+              "Ref": "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8"
             },
             "Export": {
-              "Name": "sls-crus-api-dev-DeleteDataLambdaFunctionQualifiedArn"
+              "Name": "sls-orders-service-dev-DeleteDataLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetDataLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo"
+            },
+            "Export": {
+              "Name": "sls-orders-service-dev-GetDataLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -812,7 +514,7 @@
               ]
             },
             "Export": {
-              "Name": "sls-crus-api-dev-ServiceEndpoint"
+              "Name": "sls-orders-service-dev-ServiceEndpoint"
             }
           }
         }
@@ -913,48 +615,6 @@
     ],
     "pluginsData": {},
     "functions": {
-      "api": {
-        "package": {
-          "artifact": "./bin/api.zip"
-        },
-        "handler": "bootstrap",
-        "runtime": "provided.al2",
-        "events": [
-          {
-            "http": {
-              "path": "api",
-              "method": "get",
-              "integration": "AWS_PROXY"
-            }
-          }
-        ],
-        "name": "crus-api-dev-api",
-        "memory": 1024,
-        "timeout": 6,
-        "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionO5zG6goYLuxAI1rLc4PXqr9Rxn5aNUXXCpIJbAk"
-      },
-      "loger": {
-        "package": {
-          "artifact": "./bin/loger.zip"
-        },
-        "handler": "bootstrap",
-        "runtime": "provided.al2",
-        "events": [
-          {
-            "http": {
-              "path": "loger",
-              "method": "get",
-              "integration": "AWS_PROXY"
-            }
-          }
-        ],
-        "name": "crus-api-dev-loger",
-        "memory": 1024,
-        "timeout": 6,
-        "vpc": {},
-        "versionLogicalId": "LogerLambdaVersionWNYWXW4xH1PvCgRhWIFU9rZFmulBOMNTIUi0rDeTti8"
-      },
       "deleteData": {
         "package": {
           "artifact": "./bin/deleteData.zip"
@@ -970,11 +630,11 @@
             }
           }
         ],
-        "name": "crus-api-dev-deleteData",
+        "name": "orders-service-dev-deleteData",
         "memory": 1024,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "DeleteDataLambdaVersionNbydwOnp74zaoixFiS744l4EIUw0EgpIEVOXoYJocI"
+        "versionLogicalId": "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8"
       },
       "getData": {
         "package": {
@@ -986,22 +646,22 @@
           {
             "http": {
               "path": "get-data",
-              "method": "get",
+              "method": "post",
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "crus-api-dev-getData",
+        "name": "orders-service-dev-getData",
         "memory": 1024,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "GetDataLambdaVersionv0letvjd0L5pv0cIHjFVb8EHPD6VgvoLlvD3x0ZPk"
+        "versionLogicalId": "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo"
       }
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
     "initialServerlessConfig": {
-      "service": "crus-api",
+      "service": "orders-service",
       "frameworkVersion": "3",
       "provider": {
         "$ref": "$[\"service\"][\"provider\"]"
@@ -1014,8 +674,8 @@
       },
       "package": {
         "individually": true,
-        "artifactsS3KeyDirname": "serverless/crus-api/dev/code-artifacts",
-        "artifactDirectoryName": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z"
+        "artifactsS3KeyDirname": "serverless/orders-service/dev/code-artifacts",
+        "artifactDirectoryName": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z"
       },
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -1026,7 +686,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/crus-api/dev/1720776157781-2024-07-12T09:22:37.781Z",
+    "artifactDirectoryName": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z",
     "artifact": ""
   }
 }

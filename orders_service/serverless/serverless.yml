@@ -1,6 +1,6 @@
 # serverless/serverless.yml
 
-service: crus-api
+service: orders-service
 
 frameworkVersion: "3"
 
@@ -9,28 +9,6 @@ provider:
   region: us-east-1
 
 functions:
-  api:
-    package:
-      artifact: ./bin/api.zip
-    handler: bootstrap
-    runtime: provided.al2
-
-    events:
-      - http:
-          path: api
-          method: get
-
-  loger:
-    package:
-      artifact: ./bin/loger.zip
-    handler: bootstrap
-    runtime: provided.al2
-
-    events:
-      - http:
-          path: loger
-          method: get
-
   deleteData:
     package:
       artifact: ./bin/deleteData.zip
@@ -51,7 +29,7 @@ functions:
     events:
       - http:
           path: get-data
-          method: get
+          method: post
 
 custom:
   scriptable:
