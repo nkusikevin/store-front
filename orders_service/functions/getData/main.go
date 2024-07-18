@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+
+	// "golang.org/x/text/number"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -29,8 +32,7 @@ func init() {
 }
 
 type RequestBody struct {
-	PK string `json:"pk"`
-	SK string `json:"sk"`
+	ID float64 `json:"id"`
 }
 
 type Order struct {
@@ -59,9 +61,6 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 	// Process the POST request
 	if request.HTTPMethod == "POST" {
 
-		// Log the incoming request body for debugging
-		log.Printf("Received request body ===>>>> : %s", request)
-
 		// Parse the request body
 		err := json.Unmarshal([]byte(request.Body), &requestBody)
 		if err != nil {
@@ -73,27 +72,24 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 		}
 
 		// Ensure PK and SK are not empty
-		if requestBody.PK == "" || requestBody.SK == "" {
+		if fmt.Sprintf("%v", requestBody.ID) == "" {
 			return events.APIGatewayProxyResponse{
 				StatusCode: 400,
-				Body:       "PK and SK must be provided",
+				Body:       "Order Id must be provided",
 			}, nil
-		}
-
-		// Define the primary key of the item to retrieve
-		primaryKey := map[string]*dynamodb.AttributeValue{
-			"PK": {
-				S: aws.String(requestBody.PK),
-			},
-			"SK": {
-				S: aws.String(requestBody.SK),
-			},
 		}
 
 		// Retrieve the item by primary key
 		result, err := svc.GetItem(&dynamodb.GetItemInput{
-			TableName: aws.String("OnlineStore"),
-			Key:       primaryKey,
+			TableName: aws.String("OnlineStore"), // TODO: Update to  table name with env name prefix
+			Key: map[string]*dynamodb.AttributeValue{
+				"PK": {
+					S: aws.String("ORDER#" + strconv.FormatFloat(requestBody.ID, 'f', -1, 64)),
+				},
+				"SK": {
+					S: aws.String("ORDER#" + strconv.FormatFloat(requestBody.ID, 'f', -1, 64)),
+				},
+			},
 		})
 		if err != nil {
 			return events.APIGatewayProxyResponse{

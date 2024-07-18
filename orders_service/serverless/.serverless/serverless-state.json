@@ -7,6 +7,87 @@
     "provider": {
       "name": "aws",
       "region": "us-east-1",
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:BatchGetItem"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*"
+                },
+                {
+                  "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*/index/*"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:*"
+              ],
+              "Resource": [
+                "*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "scheduler:CreateSchedule",
+                "scheduler:DeleteSchedule"
+              ],
+              "Resource": [
+                "*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iam:PassRole"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:iam::${AWS::AccountId}:role/ScheduledEventExecutionRole",
+                    {}
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "sqs:SendMessage"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "events:PutEvents"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:aws:events:${AWS::Region}:${AWS::AccountId}:event-bus/*"
+                }
+              ]
+            }
+          ]
+        }
+      },
       "stage": "dev",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
@@ -151,6 +232,24 @@
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/orders-service-dev*:*:*"
                           }
                         ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][0]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][1]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][2]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][3]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][4]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][5]"
                       }
                     ]
                   }
@@ -179,7 +278,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z/deleteData.zip"
+                "S3Key": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z/deleteData.zip"
               },
               "Handler": "bootstrap",
               "Runtime": "provided.al2",
@@ -204,7 +303,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z/getData.zip"
+                "S3Key": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z/getData.zip"
               },
               "Handler": "bootstrap",
               "Runtime": "provided.al2",
@@ -222,24 +321,24 @@
               "GetDataLogGroup"
             ]
           },
-          "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8": {
+          "DeleteDataLambdaVersion02tb8xviaKjE01T6EXYrVj5JrCS1nelM5Cwm2gSF1A": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteDataLambdaFunction"
               },
-              "CodeSha256": "LBIyn5WfabqFkwCCbs/gf78YAf4yaC3i+3HHXSEVv9o="
+              "CodeSha256": "OQ5ImcOf9hOespWyrVuWYOYzMLYVlymy5Dnpf1zCMgQ="
             }
           },
-          "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo": {
+          "GetDataLambdaVersionWPdSi0fgyGYOpVC8JAiVQtAruefmxbfJ7TiidbE8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetDataLambdaFunction"
               },
-              "CodeSha256": "Kb2MlzX7VK7abFTg1+lUdQgoiUtvkGa1ikYNVWtYzYA="
+              "CodeSha256": "o5JTDjHLi56vPBq9CtW5YS9Fs04G5VvEdSGpCaXbfP0="
             }
           },
           "ApiGatewayRestApi": {
@@ -376,7 +475,7 @@
               "GetDataLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1721210513972": {
+          "ApiGatewayDeployment1721291956825": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -476,7 +575,7 @@
           "DeleteDataLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8"
+              "Ref": "DeleteDataLambdaVersion02tb8xviaKjE01T6EXYrVj5JrCS1nelM5Cwm2gSF1A"
             },
             "Export": {
               "Name": "sls-orders-service-dev-DeleteDataLambdaFunctionQualifiedArn"
@@ -485,7 +584,7 @@
           "GetDataLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo"
+              "Ref": "GetDataLambdaVersionWPdSi0fgyGYOpVC8JAiVQtAruefmxbfJ7TiidbE8"
             },
             "Export": {
               "Name": "sls-orders-service-dev-GetDataLambdaFunctionQualifiedArn"
@@ -611,7 +710,8 @@
       }
     },
     "plugins": [
-      "serverless-scriptable-plugin"
+      "serverless-scriptable-plugin",
+      "serverless-iam-roles-per-function"
     ],
     "pluginsData": {},
     "functions": {
@@ -634,7 +734,7 @@
         "memory": 1024,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "DeleteDataLambdaVersionrgRwZ1teNzcPJTutDpf7HVGqlQKcgPeeLrsG74lH8"
+        "versionLogicalId": "DeleteDataLambdaVersion02tb8xviaKjE01T6EXYrVj5JrCS1nelM5Cwm2gSF1A"
       },
       "getData": {
         "package": {
@@ -655,7 +755,7 @@
         "memory": 1024,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "GetDataLambdaVersion8pP4x7eu628lNGPXk5drbo4CjKz6lTZQyp5U6JJo"
+        "versionLogicalId": "GetDataLambdaVersionWPdSi0fgyGYOpVC8JAiVQtAruefmxbfJ7TiidbE8"
       }
     },
     "configValidationMode": "warn",
@@ -675,7 +775,7 @@
       "package": {
         "individually": true,
         "artifactsS3KeyDirname": "serverless/orders-service/dev/code-artifacts",
-        "artifactDirectoryName": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z"
+        "artifactDirectoryName": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z"
       },
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -686,7 +786,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/orders-service/dev/1721210518461-2024-07-17T10:01:58.461Z",
+    "artifactDirectoryName": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z",
     "artifact": ""
   }
 }
