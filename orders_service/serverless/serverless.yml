@@ -52,15 +52,15 @@ provider:
             - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:event-bus/*"
 
 functions:
-  deleteData:
+  deleteOrder:
     package:
-      artifact: ./bin/deleteData.zip
+      artifact: ./bin/deleteOrder.zip
     handler: bootstrap
     runtime: provided.al2
 
     events:
       - http:
-          path: deleteData
+          path: deleteOrder
           method: delete
 
   getData:
@@ -74,10 +74,21 @@ functions:
           path: get-data
           method: post
 
+  addData:
+    package:
+      artifact: ./bin/addData.zip
+    handler: bootstrap
+    runtime: provided.al2
+
+    events:
+      - http:
+          path: add-order
+          method: post
 custom:
   scriptable:
     hooks:
-      before:package:createDeploymentArtifacts: make build
+      before:package:createDeploymentArtifacts:
+        - make build
 
 package:
   individually: true
@@ -85,3 +96,4 @@ package:
 plugins:
   - serverless-scriptable-plugin
   - serverless-iam-roles-per-function
+  - serverless-dotenv-plugin

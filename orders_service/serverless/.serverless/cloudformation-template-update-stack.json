@@ -71,16 +71,22 @@
         }
       }
     },
-    "DeleteDataLogGroup": {
+    "DeleteOrderLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/orders-service-dev-deleteData"
+        "LogGroupName": "/aws/lambda/orders-service-dev-deleteOrder"
       }
     },
     "GetDataLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/orders-service-dev-getData"
+      }
+    },
+    "AddDataLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/orders-service-dev-addData"
       }
     },
     "IamRoleLambdaExecution": {
@@ -236,20 +242,23 @@
         }
       }
     },
-    "DeleteDataLambdaFunction": {
+    "DeleteOrderLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z/deleteData.zip"
+          "S3Key": "serverless/orders-service/dev/1721321276488-2024-07-18T16:47:56.488Z/deleteOrder.zip"
         },
         "Handler": "bootstrap",
         "Runtime": "provided.al2",
-        "FunctionName": "orders-service-dev-deleteData",
+        "FunctionName": "orders-service-dev-deleteOrder",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {}
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -258,7 +267,7 @@
         }
       },
       "DependsOn": [
-        "DeleteDataLogGroup"
+        "DeleteOrderLogGroup"
       ]
     },
     "GetDataLambdaFunction": {
@@ -268,13 +277,16 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/orders-service/dev/1721291961593-2024-07-18T08:39:21.593Z/getData.zip"
+          "S3Key": "serverless/orders-service/dev/1721321276488-2024-07-18T16:47:56.488Z/getData.zip"
         },
         "Handler": "bootstrap",
         "Runtime": "provided.al2",
         "FunctionName": "orders-service-dev-getData",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {}
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -286,24 +298,62 @@
         "GetDataLogGroup"
       ]
     },
-    "DeleteDataLambdaVersion02tb8xviaKjE01T6EXYrVj5JrCS1nelM5Cwm2gSF1A": {
+    "AddDataLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/orders-service/dev/1721321276488-2024-07-18T16:47:56.488Z/addData.zip"
+        },
+        "Handler": "bootstrap",
+        "Runtime": "provided.al2",
+        "FunctionName": "orders-service-dev-addData",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {}
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "AddDataLogGroup"
+      ]
+    },
+    "DeleteOrderLambdaVersiont4dxpPheuOuw22x2u78oZLnZcisFBLRPhRPIBPmuk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "DeleteDataLambdaFunction"
+          "Ref": "DeleteOrderLambdaFunction"
         },
-        "CodeSha256": "OQ5ImcOf9hOespWyrVuWYOYzMLYVlymy5Dnpf1zCMgQ="
+        "CodeSha256": "8RqvqtUK0UUv8SjFFK6tzz8T0FgWdncDYPSV5RKlK/o="
       }
     },
-    "GetDataLambdaVersionWPdSi0fgyGYOpVC8JAiVQtAruefmxbfJ7TiidbE8": {
+    "GetDataLambdaVersionAppaG7S0SrJ9b0Z1xPr0XnisiW3pQ9O9zTA9NmRhks0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetDataLambdaFunction"
         },
-        "CodeSha256": "o5JTDjHLi56vPBq9CtW5YS9Fs04G5VvEdSGpCaXbfP0="
+        "CodeSha256": "dlU4cs6EgBYVvB/we3XX4+DoSWa8C1dRXw4M6Pvaxlg="
+      }
+    },
+    "AddDataLambdaVersion8qmuknmVB9CbOWjHwLs5WOgX2IwyU4JhH4V36rnbd4": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AddDataLambdaFunction"
+        },
+        "CodeSha256": "FFc9ZYjN/Hpcq7Td1xjcdrFL3BeUxcDToucZrIkccl0="
       }
     },
     "ApiGatewayRestApi": {
@@ -318,7 +368,7 @@
         "Policy": ""
       }
     },
-    "ApiGatewayResourceDeletedata": {
+    "ApiGatewayResourceDeleteorder": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -327,7 +377,7 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "deleteData",
+        "PathPart": "deleteOrder",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -348,13 +398,28 @@
         }
       }
     },
-    "ApiGatewayMethodDeletedataDelete": {
+    "ApiGatewayResourceAddDashorder": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "add-order",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDeleteorderDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceDeletedata"
+          "Ref": "ApiGatewayResourceDeleteorder"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -379,7 +444,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "DeleteDataLambdaFunction",
+                    "DeleteOrderLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -391,7 +456,7 @@
         "MethodResponses": []
       },
       "DependsOn": [
-        "DeleteDataLambdaPermissionApiGateway"
+        "DeleteOrderLambdaPermissionApiGateway"
       ]
     },
     "ApiGatewayMethodGetDashdataPost": {
@@ -440,7 +505,53 @@
         "GetDataLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1721291956825": {
+    "ApiGatewayMethodAddDashorderPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceAddDashorder"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AddDataLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "AddDataLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayDeployment1721321270561": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -449,16 +560,17 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodDeletedataDelete",
-        "ApiGatewayMethodGetDashdataPost"
+        "ApiGatewayMethodDeleteorderDelete",
+        "ApiGatewayMethodGetDashdataPost",
+        "ApiGatewayMethodAddDashorderPost"
       ]
     },
-    "DeleteDataLambdaPermissionApiGateway": {
+    "DeleteOrderLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteDataLambdaFunction",
+            "DeleteOrderLambdaFunction",
             "Arn"
           ]
         },
@@ -526,6 +638,43 @@
           ]
         }
       }
+    },
+    "AddDataLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AddDataLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -537,22 +686,31 @@
         "Name": "sls-orders-service-dev-ServerlessDeploymentBucketName"
       }
     },
-    "DeleteDataLambdaFunctionQualifiedArn": {
+    "DeleteOrderLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteDataLambdaVersion02tb8xviaKjE01T6EXYrVj5JrCS1nelM5Cwm2gSF1A"
+        "Ref": "DeleteOrderLambdaVersiont4dxpPheuOuw22x2u78oZLnZcisFBLRPhRPIBPmuk"
       },
       "Export": {
-        "Name": "sls-orders-service-dev-DeleteDataLambdaFunctionQualifiedArn"
+        "Name": "sls-orders-service-dev-DeleteOrderLambdaFunctionQualifiedArn"
       }
     },
     "GetDataLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetDataLambdaVersionWPdSi0fgyGYOpVC8JAiVQtAruefmxbfJ7TiidbE8"
+        "Ref": "GetDataLambdaVersionAppaG7S0SrJ9b0Z1xPr0XnisiW3pQ9O9zTA9NmRhks0"
       },
       "Export": {
         "Name": "sls-orders-service-dev-GetDataLambdaFunctionQualifiedArn"
+      }
+    },
+    "AddDataLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AddDataLambdaVersion8qmuknmVB9CbOWjHwLs5WOgX2IwyU4JhH4V36rnbd4"
+      },
+      "Export": {
+        "Name": "sls-orders-service-dev-AddDataLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
