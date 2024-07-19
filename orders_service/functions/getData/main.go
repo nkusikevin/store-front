@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -81,7 +82,7 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 
 		// Retrieve the item by primary key
 		result, err := svc.GetItem(&dynamodb.GetItemInput{
-			TableName: aws.String("OnlineStore"), // TODO: Update to  table name with env name prefix
+			TableName: aws.String(os.Getenv("DYNAMODB_TABLE")), // TODO: Update to  table name with env name prefix
 			Key: map[string]*dynamodb.AttributeValue{
 				"PK": {
 					S: aws.String("ORDER#" + strconv.FormatFloat(requestBody.ID, 'f', -1, 64)),

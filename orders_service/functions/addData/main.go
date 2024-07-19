@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -94,7 +95,7 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 
 	input := &dynamodb.PutItemInput{
 		Item:      av,
-		TableName: aws.String("OnlineStore"),
+		TableName: aws.String(os.Getenv("DYNAMODB_TABLE")),
 	}
 
 	_, err = svc.PutItem(input)
